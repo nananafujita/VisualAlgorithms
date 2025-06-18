@@ -1,6 +1,0 @@
-<RCC>
-  <qresource prefix="/qt/qml/VisualAlgorithms/">
-    <file alias="Main.qml">/Users/nanaefujita/Qt Projects/VisualAlgorithms/Main.qml</file>
-  </qresource>
-</RCC>
-
