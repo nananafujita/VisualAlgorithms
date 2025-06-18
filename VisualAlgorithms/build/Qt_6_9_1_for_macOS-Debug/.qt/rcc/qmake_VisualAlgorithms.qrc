@@ -1,0 +1,6 @@
+<RCC>
+  <qresource prefix="/qt/qml/VisualAlgorithms">
+    <file alias="qmldir">/Users/nanaefujita/Qt Projects/VisualAlgorithms/build/Qt_6_9_1_for_macOS-Debug/VisualAlgorithms/qmldir</file>
+  </qresource>
+</RCC>
+

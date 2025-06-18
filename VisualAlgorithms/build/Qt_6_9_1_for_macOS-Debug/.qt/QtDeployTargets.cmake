@@ -1,0 +1,2 @@
+set(__QT_DEPLOY_TARGET_appVisualAlgorithms_FILE /Users/nanaefujita/Qt Projects/VisualAlgorithms/build/Qt_6_9_1_for_macOS-Debug/appVisualAlgorithms.app/Contents/MacOS/appVisualAlgorithms)
+set(__QT_DEPLOY_TARGET_appVisualAlgorithms_TYPE EXECUTABLE)

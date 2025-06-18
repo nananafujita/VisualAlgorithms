@@ -1,0 +1,28 @@
+[
+    {
+        "moduleFiles": [
+            {
+                "entries": [
+                    {
+                        "codegenSuccessful": false,
+                        "column": 18,
+                        "durationMicroseconds": 2059,
+                        "errorMessage": "Cannot access value for name valueNoise",
+                        "functionName": "onPaint",
+                        "line": 14
+                    },
+                    {
+                        "codegenSuccessful": true,
+                        "column": 23,
+                        "durationMicroseconds": 326,
+                        "errorMessage": "",
+                        "functionName": "fill",
+                        "line": 11
+                    }
+                ],
+                "filePath": "/Users/nanaefujita/Qt Projects/VisualAlgorithms/Main.qml"
+            }
+        ],
+        "moduleId": "VisualAlgorithms(appVisualAlgorithms)"
+    }
+]
