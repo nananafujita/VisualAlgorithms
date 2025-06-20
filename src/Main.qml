@@ -34,7 +34,6 @@ Window {
                         var y = valueNoise.noise1D(x)
                         ctx.lineTo(i, height / 2 - y * height / 2)
                     }
-
                     ctx.lineWidth = 2
                     ctx.stroke()
                 }
@@ -59,6 +58,22 @@ Window {
                     const newValue = parseInt(text)
                     if (!isNaN(newValue)) {
                         valueNoise.period = newValue
+                        canvas.requestPaint()  // force redraw with new value
+                    }
+                }
+            }
+
+            Text {
+                text: "seed: "
+            }
+            TextField {
+                id: seedField
+                width: 100
+                text: valueNoise.seed.toString()
+                onEditingFinished: {
+                    const newValue = parseInt(text)
+                    if (!isNaN(newValue)) {
+                        valueNoise.seed = newValue
                         canvas.requestPaint()  // force redraw with new value
                     }
                 }

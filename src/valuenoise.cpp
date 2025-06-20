@@ -21,10 +21,29 @@ float ValueNoise::noise1D(float x)
     return lerp(smoothstep(t), minX, maxX);
 }
 
-void ValueNoise::setPeriod(int n){
-    if (m_period != n) {
-        m_period = n;
+float ValueNoise::noise2D(float x, float y){
+    return 0.0;
+}
+
+void ValueNoise::setPeriod(int p){
+    if (m_period != p) {
+        m_period = p;
         emit periodChanged();
+    }
+}
+
+void ValueNoise::setSeed(int s){
+    if (m_seed != s) {
+        m_seed = s;
+        updateLattice();
+        emit seedChanged();
+    }
+}
+
+void ValueNoise::updateLattice() {
+    srand(m_seed);
+    for (int i=0; i<m_period; i++) {
+        m_lattice[i] = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
     }
 }
 
@@ -36,8 +55,4 @@ float ValueNoise::smoothstep(float t)
 float ValueNoise::lerp(float t, int minX, int maxX)
 {
     return m_lattice[minX] * (1 - t) + m_lattice[maxX] * t;
-}
-
-float ValueNoise::noise2D(float x, float y){
-    return 0.0;
 }
