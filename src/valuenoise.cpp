@@ -33,13 +33,12 @@ void ValueNoise::setPeriod(int p){
     }
 }
 
+// add increment values when growing lattice size
 void ValueNoise::updateLatticePeriod(int newPeriod) {
     if (m_period < newPeriod) {
         for (int i=m_period; i<newPeriod; i++) {
             m_lattice.push_back(static_cast<float>(rand()) / static_cast<float>(RAND_MAX));
         }
-    } else if (m_period > newPeriod ){
-        m_lattice.erase(m_lattice.begin() + newPeriod, m_lattice.end());
     }
 }
 
