@@ -6,7 +6,7 @@
 class ValueNoise : public QObject
 {
     Q_OBJECT;
-    Q_PROPERTY(int numVertices READ numVertices WRITE setNumVertices NOTIFY numVerticesChanged);
+    Q_PROPERTY(int period READ period WRITE setPeriod NOTIFY periodChanged);
 
 public:
     ValueNoise(QObject* parent = nullptr);
@@ -14,16 +14,16 @@ public:
     Q_INVOKABLE float noise1D(float x);
     Q_INVOKABLE float noise2D(float x, float y);
 
-    Q_INVOKABLE int numVertices() const { return m_numVertices; }
+    Q_INVOKABLE int period() const { return m_period; }
 
 public slots:
-    void setNumVertices(int n);
+    void setPeriod(int n);
 
 signals:
-    void numVerticesChanged();
+    void periodChanged();
 
 private:
-    int m_numVertices = 10;
+    int m_period = 10;
     int m_seed = 2025;
 
     std::vector<float> m_lattice;

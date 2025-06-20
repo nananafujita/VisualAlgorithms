@@ -5,7 +5,7 @@
 ValueNoise::ValueNoise(QObject* parent)
 {
     srand(m_seed);
-    for (int i=0; i<m_numVertices; i++) {
+    for (int i=0; i<m_period; i++) {
         m_lattice.push_back(static_cast<float>(rand()) / static_cast<float>(RAND_MAX));
     }
 }
@@ -15,16 +15,16 @@ float ValueNoise::noise1D(float x)
 {
     int x0 = static_cast<int>(x);
     //int minX = x0 & (numVertices - 1);
-    int minX = x0 % m_numVertices;
+    int minX = x0 % m_period;
     float t = x - x0;
-    int maxX = (minX == m_numVertices - 1) ? 0 : minX + 1;
+    int maxX = (minX == m_period - 1) ? 0 : minX + 1;
     return lerp(smoothstep(t), minX, maxX);
 }
 
-void ValueNoise::setNumVertices(int n){
-    if (m_numVertices != n) {
-        m_numVertices = n;
-        emit numVerticesChanged();
+void ValueNoise::setPeriod(int n){
+    if (m_period != n) {
+        m_period = n;
+        emit periodChanged();
     }
 }
 

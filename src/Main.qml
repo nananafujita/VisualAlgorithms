@@ -28,7 +28,7 @@ Window {
                     ctx.clearRect(0, 0, width, height)
 
                     ctx.beginPath()
-                    var v = valueNoise.numVertices;
+                    var v = valueNoise.period;
                     for (var i = 0; i < width; i++) {
                         var x = i / (200 - 1) * v
                         var y = valueNoise.noise1D(x)
@@ -52,13 +52,13 @@ Window {
                 text: "numVertices: "
             }
             TextField {
-                id: numVerticesInput
+                id: periodField
                 width: 100
-                text: valueNoise.numVertices.toString()
+                text: valueNoise.period.toString()
                 onEditingFinished: {
                     const newValue = parseInt(text)
                     if (!isNaN(newValue)) {
-                        valueNoise.numVertices = newValue
+                        valueNoise.period = newValue
                         canvas.requestPaint()  // force redraw with new value
                     }
                 }
