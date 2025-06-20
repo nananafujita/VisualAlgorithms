@@ -9,16 +9,16 @@ find_package(Qt6 REQUIRED COMPONENTS Quick)
 qt_standard_project_setup(REQUIRES 6.8)
 
 qt_add_executable(appVisualAlgorithms
-    main.cpp
+    src/main.cpp
 )
 
 qt_add_qml_module(appVisualAlgorithms
     URI VisualAlgorithms
     VERSION 1.0
     QML_FILES
-        Main.qml
-        SOURCES perlinnoise.h perlinnoise.cpp
-        SOURCES valuenoise.h valuenoise.cpp
+        src/Main.qml
+        SOURCES src/perlinnoise.h src/perlinnoise.cpp
+        SOURCES src/valuenoise.h src/valuenoise.cpp
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
