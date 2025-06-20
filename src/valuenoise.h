@@ -17,6 +17,7 @@ public:
 
     Q_INVOKABLE int period() const { return m_period; }
     Q_INVOKABLE int seed() const { return m_seed; }
+    Q_INVOKABLE int steps() const { return m_steps; }
 
 public slots:
     void setPeriod(int p);
@@ -29,10 +30,12 @@ signals:
 private:
     int m_period = 10;
     int m_seed = 2025;
+    int m_steps = 200;
 
     std::vector<float> m_lattice;
 
-    void updateLattice();
+    void updateLatticeSeed();
+    void updateLatticePeriod(int newPeriod);
     float smoothstep(float t);
     float lerp(float t, int minX, int maxX);
 };

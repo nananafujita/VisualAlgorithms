@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Controls
+import QtQuick.Layouts
 
 Window {
     width: 1280
@@ -9,7 +10,7 @@ Window {
 
     Row {
         anchors.fill: parent
-        spacing: 40
+        //spacing: 40
 
         Column {
             Canvas {
@@ -29,8 +30,9 @@ Window {
 
                     ctx.beginPath()
                     var v = valueNoise.period;
+                    var s = valueNoise.steps();
                     for (var i = 0; i < width; i++) {
-                        var x = i / (200 - 1) * v
+                        var x = (i / (s - 1)) * v
                         var y = valueNoise.noise1D(x)
                         ctx.lineTo(i, height / 2 - y * height / 2)
                     }
@@ -40,45 +42,79 @@ Window {
             }
         }
 
-        Column {
+        Rectangle {
+            width: 200
+            height: parent.height
+            radius: 2
+            color: '#545454'
+
             anchors {
                 top: parent.top
                 right: parent.right
-                margins: 30
             }
 
-            Text {
-                text: "numVertices: "
-            }
-            TextField {
-                id: periodField
-                width: 100
-                text: valueNoise.period.toString()
-                onEditingFinished: {
-                    const newValue = parseInt(text)
-                    if (!isNaN(newValue)) {
-                        valueNoise.period = newValue
-                        canvas.requestPaint()  // force redraw with new value
+            Column {
+                anchors {
+                    top: parent.top
+                    right: parent.right
+                    left: parent.left
+                }
+                width: parent.width
+                height: parent.height
+
+                spacing: 10
+
+                RowLayout {
+                    id: periodRow
+                    spacing: 5
+
+                    Text {
+                        text: "period:"
+                        color: '#FFFFFF'
+                        Layout.fillWidth: true
+                    }
+                    TextField {
+                        id: periodField
+                        Layout.alignment: Qt.AlignRight
+                        Layout.preferredWidth: 80
+                        text: valueNoise.period.toString()
+
+                        onEditingFinished: {
+                            const newValue = parseInt(text)
+                            if (!isNaN(newValue)) {
+                                valueNoise.period = newValue
+                                canvas.requestPaint()
+                            }
+                        }
                     }
                 }
-            }
 
-            Text {
-                text: "seed: "
-            }
-            TextField {
-                id: seedField
-                width: 100
-                text: valueNoise.seed.toString()
-                onEditingFinished: {
-                    const newValue = parseInt(text)
-                    if (!isNaN(newValue)) {
-                        valueNoise.seed = newValue
-                        canvas.requestPaint()  // force redraw with new value
+                RowLayout {
+                    id: seedRow
+                    spacing: 5
+
+                    Text {
+                        text: "seed: "
+                        color: '#FFFFFF'
+                        horizontalAlignment: Text.AlignLeft
                     }
-                }
-            }
 
+                    TextField {
+                        id: seedField
+                        Layout.preferredWidth: 80
+                        text: valueNoise.seed.toString()
+                        onEditingFinished: {
+                            const newValue = parseInt(text)
+                            if (!isNaN(newValue)) {
+                                valueNoise.seed = newValue
+                                canvas.requestPaint()  // force redraw with new value
+                            }
+                        }
+                    }
+
+                }
+
+            }
         }
     }
 }

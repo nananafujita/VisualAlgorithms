@@ -27,20 +27,31 @@ float ValueNoise::noise2D(float x, float y){
 
 void ValueNoise::setPeriod(int p){
     if (m_period != p) {
+        updateLatticePeriod(p);
         m_period = p;
         emit periodChanged();
+    }
+}
+
+void ValueNoise::updateLatticePeriod(int newPeriod) {
+    if (m_period < newPeriod) {
+        for (int i=m_period; i<newPeriod; i++) {
+            m_lattice.push_back(static_cast<float>(rand()) / static_cast<float>(RAND_MAX));
+        }
+    } else if (m_period > newPeriod ){
+        m_lattice.erase(m_lattice.begin() + newPeriod, m_lattice.end());
     }
 }
 
 void ValueNoise::setSeed(int s){
     if (m_seed != s) {
         m_seed = s;
-        updateLattice();
+        updateLatticeSeed();
         emit seedChanged();
     }
 }
 
-void ValueNoise::updateLattice() {
+void ValueNoise::updateLatticeSeed() {
     srand(m_seed);
     for (int i=0; i<m_period; i++) {
         m_lattice[i] = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
