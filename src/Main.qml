@@ -8,118 +8,131 @@ Window {
     visible: true
     title: qsTr("Visual Algorithms")
     color: '#404040'
+    Material.theme: Material.Dark
 
-    Row {
-        anchors.fill: parent
-        //spacing: 40
 
-        Canvas {
-            width: 500
-            height: 500
-            id: canvas
+    Canvas {
+        id: canvas
+        width: 500
+        height: 500
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.margins: 30
 
-            anchors {
-                left: parent.left
-                top: parent.top
-                margins: 30
+        onPaint: {
+            var ctx = getContext("2d")
+            ctx.fillStyle = "#FFFFFF"
+            ctx.fillRect(0, 0, width, height)
+
+            ctx.beginPath()
+            var v = valueNoise.period;
+            var s = valueNoise.steps();
+            for (var i = 0; i < width; i++) {
+                var x = (i / (s - 1)) * v
+                var y = valueNoise.noise1D(x)
+                ctx.lineTo(i, height / 2 - y * height / 2)
             }
-
-            onPaint: {
-                var ctx = getContext("2d")
-                ctx.fillStyle = "#FFFFFF"
-                ctx.fillRect(0, 0, width, height)
-
-                ctx.beginPath()
-                var v = valueNoise.period;
-                var s = valueNoise.steps();
-                for (var i = 0; i < width; i++) {
-                    var x = (i / (s - 1)) * v
-                    var y = valueNoise.noise1D(x)
-                    ctx.lineTo(i, height / 2 - y * height / 2)
-                }
-                ctx.lineWidth = 2
-                ctx.stroke()
-            }
+            ctx.lineWidth = 2
+            ctx.stroke()
         }
+    }
 
+
+    Rectangle {
+        width: 200
+        height: parent.height
+        color: '#545454'
+        anchors.top: parent.top
+        anchors.right: parent.right
 
         Rectangle {
-            width: 200
-            height: parent.height
-            color: '#545454'
-
+            id: periodRow
+            width: parent.width
+            height: 20
+            color: 'transparent'
             anchors.top: parent.top
-            anchors.right: parent.right
+            anchors.margins: 20
 
-            ColumnLayout {
-                spacing: 10
+            Text {
+                width: 100
+                height: 20
+                font.pixelSize: 13
+                anchors.top: parent.top
+                anchors.left: parent.left
+                horizontalAlignment: Text.AlignRight
+                verticalAlignment: Text.AlignVCenter
+                text: "period"
+                color: '#FFFFFF'
+            }
 
-                RowLayout {
-                    Layout.fillWidth: true
-                    Layout.preferredHeight: 10
-                    Layout.alignment: AlignTop
-                    spacing: 10
+            TextField {
+                background: Rectangle { color: '#404040' }
+                color: '#FFFFFF'
+                width: 50
+                height: 20
+                anchors.top: parent.top
+                anchors.right: parent.right
 
-                    Text {
-                        Layout.preferredWidth: 100
-                        horizontalAlignment: Text.AlignRight
-                        Layout.leftMargin: 10
-                        Layout.topMargin: 10
-                        text: "period"
-                        color: '#FFFFFF'
-                    }
+                verticalAlignment: TextInput.AlignVCenter
+                horizontalAlignment: TextInput.AlignHCenter
+                bottomPadding: 0
+                topPadding: 0
 
-                    TextField {
-                        background: Rectangle {
-                            color: '#404040'
-                        }
-                        color: '#FFFFFF'
-                        Layout.alignment: Qt.AlignRight
-                        Layout.preferredWidth: 50
-                        Layout.rightMargin: 10
-                        Layout.topMargin: 10
-                        text: valueNoise.period.toString()
+                text: valueNoise.period.toString()
+                font.pixelSize: 12
 
-                        onEditingFinished: {
-                            const newValue = parseInt(text)
-                            if (!isNaN(newValue)) {
-                                valueNoise.period = newValue
-                                canvas.requestPaint()
-                            }
-                        }
+                onEditingFinished: {
+                    const newValue = parseInt(text)
+                    if (!isNaN(newValue)) {
+                        valueNoise.period = newValue
+                        canvas.requestPaint()
                     }
                 }
+            }
+        }
+        Rectangle {
+            width: parent.width
+            height: 20
+            color: 'transparent'
+            anchors {
+                top: periodRow.bottom
+                topMargin: 5
+                leftMargin: 20
+                rightMargin: 20
+            }
 
-                RowLayout {
-                    width: parent.width
-                    spacing: 10
-                    Layout.topMargin: 10
-                    Text {
-                        text: "seed"
-                        color: '#FFFFFF'
-                        Layout.preferredWidth: 100
-                        horizontalAlignment: Text.AlignRight
-                        Layout.leftMargin: 10
-                        Layout.topMargin: 10
-                    }
+            Text {
+                width: 100
+                font.pixelSize: 13
+                anchors.top: parent.top
+                anchors.left: parent.left
+                horizontalAlignment: Text.AlignRight
+                verticalAlignment: Text.AlignVCenter
+                text: "seed"
+                color: '#FFFFFF'
+            }
 
-                    TextField {
-                        background: Rectangle {
-                            color: '#404040'
-                        }
-                        color: '#FFFFFF'
-                        Layout.alignment: Qt.AlignRight
-                        Layout.preferredWidth: 50
-                        Layout.rightMargin: 10
-                        Layout.topMargin: 10
-                        text: valueNoise.seed.toString()
-                        onEditingFinished: {
-                            const newValue = parseInt(text)
-                            if (!isNaN(newValue)) {
-                                valueNoise.seed = newValue
-                                canvas.requestPaint()  // force redraw with new value
-                            }
-                        }
+            TextField {
+                background: Rectangle { color: '#404040' }
+                color: '#FFFFFF'
+                width: 50
+                height: 20
+                anchors.top: parent.top
+                anchors.right: parent.right
+
+                verticalAlignment: TextInput.AlignVCenter
+                horizontalAlignment: TextInput.AlignHCenter
+                bottomPadding: 0
+                topPadding: 0
+
+                text: valueNoise.period.toString()
+                font.pixelSize: 12
+
+                onEditingFinished: {
+                    const newValue = parseInt(text)
+                    if (!isNaN(newValue)) {
+                        valueNoise.seed = newValue
+                        canvas.requestPaint()  // force redraw with new value
                     }
                 }
             }

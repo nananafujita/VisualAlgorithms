@@ -1,11 +1,13 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
+#include <QQuickStyle>
 
 #include "valuenoise.h"
 
 int main(int argc, char *argv[])
 {
+    QQuickStyle::setStyle("Material");
     QGuiApplication app(argc, argv);
 
     QQmlApplicationEngine engine;
