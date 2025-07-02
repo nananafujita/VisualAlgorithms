@@ -10,6 +10,26 @@ Window {
     color: '#404040'
     Material.theme: Material.Dark
 
+    /*TabBar {
+        id: tabs
+        width: parent.width
+        TabButton {
+            text: qsTr("1D Value")
+        }
+        TabButton {
+            text: qsTr("+")
+        }
+    }
+    StackLayout {
+        width: parent.width
+        currentIndex: tabs.currentIndex
+        Item {
+            id: value1DTab
+        }
+        Item {
+            id: value2DTab
+        }
+    }*/
 
     Canvas {
         id: canvas
@@ -25,12 +45,12 @@ Window {
             ctx.fillRect(0, 0, width, height)
 
             ctx.beginPath()
-            var v = valueNoise.period;
+            var p = valueNoise.period;
             var s = valueNoise.steps();
             for (var i = 0; i < width; i++) {
-                var x = (i / (s - 1)) * v
+                var x = i / (s - 1) * p
                 var y = valueNoise.noise1D(x)
-                ctx.lineTo(i, height / 2 - y * height / 2)
+                ctx.lineTo(i, 3 * height / 4 - y * height / 2)
             }
             ctx.lineWidth = 2
             ctx.stroke()
@@ -72,6 +92,7 @@ Window {
                 height: 20
                 anchors.top: parent.top
                 anchors.right: parent.right
+                anchors.rightMargin: 10
 
                 verticalAlignment: TextInput.AlignVCenter
                 horizontalAlignment: TextInput.AlignHCenter
@@ -119,6 +140,7 @@ Window {
                 height: 20
                 anchors.top: parent.top
                 anchors.right: parent.right
+                anchors.rightMargin: 10
 
                 verticalAlignment: TextInput.AlignVCenter
                 horizontalAlignment: TextInput.AlignHCenter
