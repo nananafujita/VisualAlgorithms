@@ -10,27 +10,6 @@ Window {
     color: '#D9D9D9'
     Material.theme: Material.Dark
 
-    /*TabBar {
-        id: tabs
-        width: parent.width
-        TabButton {
-            text: qsTr("1D Value")
-        }
-        TabButton {
-            text: qsTr("+")
-        }
-    }
-    StackLayout {
-        width: parent.width
-        currentIndex: tabs.currentIndex
-        Item {
-            id: value1DTab
-        }
-        Item {
-            id: value2DTab
-        }
-    }*/
-
     Canvas {
         id: canvas
         width: 500
@@ -271,7 +250,6 @@ Window {
                 color: 'transparent'
                 anchors.fill: parent
             }
-
             onClicked: valueNoise.exportNoise()
         }
     }

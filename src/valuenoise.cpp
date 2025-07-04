@@ -9,6 +9,7 @@
 #include <QFileInfo>
 
 ValueNoise::ValueNoise(QObject* parent)
+    : Noise(parent)
 {
     srand(m_seed);
     for (int i=0; i<m_period; i++) {
@@ -24,7 +25,7 @@ float ValueNoise::noise1D(float x) const
     int minX = x0 % m_period;
     float t = x - x0;
     int maxX = (minX == m_period - 1) ? 0 : minX + 1;
-    return lerp(smoothstep(t), minX, maxX);
+    return lerp(smoothstep(t), m_lattice[minX], m_lattice[maxX]);
 }
 
 float ValueNoise::noise2D(float x, float y){
@@ -42,15 +43,6 @@ void ValueNoise::exportNoise() const {
         out << x << "," << y << "\n";
     }
     qDebug() << "Exporting to:" << QFileInfo(file).absoluteFilePath();
-
-}
-
-void ValueNoise::setPeriod(int p){
-    if (m_period != p) {
-        updateLatticePeriod(p);
-        m_period = p;
-        emit periodChanged();
-    }
 }
 
 // add increment values when growing lattice size
@@ -62,34 +54,9 @@ void ValueNoise::updateLatticePeriod(int newPeriod) {
     }
 }
 
-void ValueNoise::setSeed(int s){
-    if (m_seed != s) {
-        m_seed = s;
-        updateLatticeSeed();
-        emit seedChanged();
-    }
-}
-
 void ValueNoise::updateLatticeSeed() {
     srand(m_seed);
     for (int i=0; i<m_period; i++) {
         m_lattice[i] = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
     }
-}
-
-void ValueNoise::setSteps(int s){
-    if (m_steps != s) {
-        m_steps = s;
-        emit stepsChanged();
-    }
-}
-
-float ValueNoise::smoothstep(float t) const
-{
-    return t * t * (3 - 2 * t);
-}
-
-float ValueNoise::lerp(float t, int minX, int maxX) const
-{
-    return m_lattice[minX] * (1 - t) + m_lattice[maxX] * t;
 }
