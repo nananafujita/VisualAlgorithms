@@ -8,6 +8,7 @@ class ValueNoise : public QObject
     Q_OBJECT;
     Q_PROPERTY(int period READ period WRITE setPeriod NOTIFY periodChanged);
     Q_PROPERTY(int seed READ seed WRITE setSeed NOTIFY seedChanged);
+    Q_PROPERTY(int steps READ steps WRITE setSteps NOTIFY stepsChanged);
 
 public:
     ValueNoise(QObject* parent = nullptr);
@@ -23,10 +24,12 @@ public:
 public slots:
     void setPeriod(int p);
     void setSeed(int s);
+    void setSteps(int s);
 
 signals:
     void periodChanged();
     void seedChanged();
+    void stepsChanged();
 
 private:
     int m_period = 10;

@@ -77,6 +77,13 @@ void ValueNoise::updateLatticeSeed() {
     }
 }
 
+void ValueNoise::setSteps(int s){
+    if (m_steps != s) {
+        m_steps = s;
+        emit stepsChanged();
+    }
+}
+
 float ValueNoise::smoothstep(float t) const
 {
     return t * t * (3 - 2 * t);

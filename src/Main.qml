@@ -46,11 +46,12 @@ Window {
 
             ctx.beginPath()
             var p = valueNoise.period;
-            var s = valueNoise.steps();
+            var s = valueNoise.steps;
             for (var i = 0; i < s; i++) {
                 var x = i / (s - 1) * p
                 var y = valueNoise.noise1D(x)
-                ctx.lineTo(i, 3 * height / 4 - y * height / 2)
+                var canvasX = i / (s - 1) * width
+                ctx.lineTo(canvasX, 3 * height / 4 - y * height / 2)
             }
             ctx.lineWidth = 2
             ctx.stroke()
@@ -195,13 +196,61 @@ Window {
             }
         }
 
+        Text {
+            id: stepsText
+            width: parent.width
+            font.pixelSize: 10
+            anchors {
+                top: seedField.bottom
+                left: periodText.left
+                right: periodText.right
+                topMargin: 10
+            }
+            horizontalAlignment: Text.AlignLeft
+            verticalAlignment: Text.AlignVCenter
+            text: "Steps"
+            color: '#8B8B8B'
+        }
+
+        TextField {
+            id: stepsField
+            background: Rectangle {
+                color: '#EDEDED'
+                radius: 3
+            }
+            color: '#000000'
+            width: parent.width
+            height: 20
+            anchors {
+                top: stepsText.bottom
+                left: stepsText.left
+                right: stepsText.right
+                topMargin: 2
+            }
+            verticalAlignment: TextInput.AlignVCenter
+            horizontalAlignment: TextInput.AlignRight
+            bottomPadding: 0
+            topPadding: 0
+
+            text: valueNoise.steps.toString()
+            font.pixelSize: 12
+
+            onEditingFinished: {
+                const newValue = parseInt(text)
+                if (!isNaN(newValue)) {
+                    valueNoise.steps = newValue
+                    canvas.requestPaint()  // force redraw with new value
+                }
+            }
+        }
+
         Button {
             id: exportButton
             width: parent.width
             height: 20
             font.pixelSize: 12
             anchors {
-                top: seedField.bottom
+                top: stepsField.bottom
                 topMargin: 20
                 right: parent.right
                 left: parent.left
