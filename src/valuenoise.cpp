@@ -1,6 +1,12 @@
 #include "valuenoise.h"
 
 #include <cstdlib>
+#include <QFile>
+#include <QIODevice>
+#include <QTextStream>
+#include <QDebug>
+#include <QDir>
+#include <QFileInfo>
 
 ValueNoise::ValueNoise(QObject* parent)
 {
@@ -11,7 +17,7 @@ ValueNoise::ValueNoise(QObject* parent)
 }
 
 // implement smoothstep to achieve smooth linear interpolation
-float ValueNoise::noise1D(float x)
+float ValueNoise::noise1D(float x) const
 {
     int x0 = static_cast<int>(x);
     //int minX = x0 & (numVertices - 1);
@@ -23,6 +29,20 @@ float ValueNoise::noise1D(float x)
 
 float ValueNoise::noise2D(float x, float y){
     return 0.0;
+}
+
+void ValueNoise::exportNoise() const {
+    QFile file(QDir::homePath() + "/1DNoise.csv");
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) return;
+    QTextStream out(&file);
+    out << "x,y\n";
+    for (int i=0; i<m_steps; i++) {
+        float x = static_cast<float>(i) / (m_steps - 1) * m_period;
+        float y = noise1D(x);
+        out << x << "," << y << "\n";
+    }
+    qDebug() << "Exporting to:" << QFileInfo(file).absoluteFilePath();
+
 }
 
 void ValueNoise::setPeriod(int p){
@@ -57,12 +77,12 @@ void ValueNoise::updateLatticeSeed() {
     }
 }
 
-float ValueNoise::smoothstep(float t)
+float ValueNoise::smoothstep(float t) const
 {
     return t * t * (3 - 2 * t);
 }
 
-float ValueNoise::lerp(float t, int minX, int maxX)
+float ValueNoise::lerp(float t, int minX, int maxX) const
 {
     return m_lattice[minX] * (1 - t) + m_lattice[maxX] * t;
 }

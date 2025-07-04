@@ -12,12 +12,13 @@ class ValueNoise : public QObject
 public:
     ValueNoise(QObject* parent = nullptr);
 
-    Q_INVOKABLE float noise1D(float x);
+    Q_INVOKABLE float noise1D(float x) const;
     Q_INVOKABLE float noise2D(float x, float y);
 
     Q_INVOKABLE int period() const { return m_period; }
     Q_INVOKABLE int seed() const { return m_seed; }
     Q_INVOKABLE int steps() const { return m_steps; }
+    Q_INVOKABLE void exportNoise() const;
 
 public slots:
     void setPeriod(int p);
@@ -36,8 +37,8 @@ private:
 
     void updateLatticeSeed();
     void updateLatticePeriod(int newPeriod);
-    float smoothstep(float t);
-    float lerp(float t, int minX, int maxX);
+    float smoothstep(float t) const;
+    float lerp(float t, int minX, int maxX) const;
 };
 
 #endif // VALUENOISE_H
