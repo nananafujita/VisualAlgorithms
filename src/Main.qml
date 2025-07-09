@@ -30,7 +30,7 @@ Window {
                 var x = i / (s - 1) * p
                 var y = valueNoise.noise1D(x)
                 var canvasX = i / (s - 1) * width
-                ctx.lineTo(canvasX, 3 * height / 4 - y * height / 2)
+                ctx.lineTo(canvasX, height * 5 / 8 - y * height / 4)
             }
             ctx.lineWidth = 2
             ctx.stroke()
@@ -78,11 +78,91 @@ Window {
             }
         }
         Text {
-            id: periodText
+            id: xRangeText
             width: parent.width
             font.pixelSize: 10
             anchors {
                 top: comboBox.bottom
+                left: parent.left
+                right: parent.right
+                topMargin: 10
+                leftMargin: 10
+                rightMargin: 10
+            }
+            horizontalAlignment: Text.AlignLeft
+            verticalAlignment: Text.AlignVCenter
+            text: "X Range"
+            color: '#8B8B8B'
+        }
+
+        TextField {
+            id: xRangeMin
+            background: Rectangle {
+                color: '#EDEDED'
+                radius: 3
+            }
+            color: '#000000'
+            width: xRangeText.width / 2 - 2
+            height: 20
+            anchors {
+                top: xRangeText.bottom
+                left: xRangeText.left
+                topMargin: 2
+            }
+            verticalAlignment: TextInput.AlignVCenter
+            horizontalAlignment: TextInput.AlignRight
+            bottomPadding: 0
+            topPadding: 0
+
+            text: '0'
+            font.pixelSize: 12
+
+            /*
+            onEditingFinished: {
+                const newValue = parseInt(text)
+                if (!isNaN(newValue)) {
+                    valueNoise.period = newValue
+                    canvas.requestPaint()
+                }
+            }*/
+        }
+        TextField {
+            id: xRangeMax
+            background: Rectangle {
+                color: '#EDEDED'
+                radius: 3
+            }
+            color: '#000000'
+            width: xRangeText.width / 2 - 2
+            height: 20
+            anchors {
+                top: xRangeText.bottom
+                right: xRangeText.right
+                topMargin: 2
+            }
+            verticalAlignment: TextInput.AlignVCenter
+            horizontalAlignment: TextInput.AlignRight
+            bottomPadding: 0
+            topPadding: 0
+
+            text: '10'
+            font.pixelSize: 12
+
+            /*
+            onEditingFinished: {
+                const newValue = parseInt(text)
+                if (!isNaN(newValue)) {
+                    valueNoise.period = newValue
+                    canvas.requestPaint()
+                }
+            }*/
+        }
+        Text {
+            id: periodText
+            width: parent.width
+            font.pixelSize: 10
+            anchors {
+                top: xRangeMin.bottom
                 left: parent.left
                 right: parent.right
                 topMargin: 10
@@ -123,6 +203,7 @@ Window {
                 if (!isNaN(newValue)) {
                     valueNoise.period = newValue
                     canvas.requestPaint()
+                    text = valueNoise.period.toString()
                 }
             }
         }

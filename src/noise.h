@@ -28,15 +28,23 @@ signals:
     void stepsChanged();
 
 protected:
+    virtual void populateLattice() = 0;
     virtual void updateLatticePeriod(int newPeriod) = 0;
-    virtual void updateLatticeSeed() = 0;
-
-    float smoothstep(float t) const;
-    float lerp(float t, float minX, float maxX) const;
 
     int m_period;
     int m_seed;
     int m_steps;
 };
+
+inline float smoothstep(float t)
+{
+    return t * t * (3 - 2 * t);
+}
+
+inline float lerp(float t, float a, float b)
+{
+    return a * (1 - t) + b * t;
+}
+
 
 #endif // NOISE_H

@@ -3,7 +3,7 @@
 #include <QQmlContext>
 #include <QQuickStyle>
 
-#include "valuenoise.h"
+#include "valuenoise1d.h"
 
 int main(int argc, char *argv[])
 {
@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
         []() { QCoreApplication::exit(-1); },
         Qt::QueuedConnection);
 
-    ValueNoise vn;
+    ValueNoise1D vn;
     engine.rootContext()->setContextProperty("valueNoise", &vn);
 
     engine.loadFromModule("VisualAlgorithms", "Main");

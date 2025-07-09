@@ -18,8 +18,9 @@ qt_add_qml_module(appVisualAlgorithms
     QML_FILES
         src/Main.qml
         SOURCES src/perlinnoise.h src/perlinnoise.cpp
-        SOURCES src/valuenoise.h src/valuenoise.cpp
+        SOURCES src/valuenoise1d.h src/valuenoise1d.cpp
         SOURCES src/noise.h src/noise.cpp
+        SOURCES src/valuenoise2d.h src/valuenoise2d.cpp
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
