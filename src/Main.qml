@@ -251,7 +251,8 @@ Window {
                 const newValue = parseInt(text)
                 if (!isNaN(newValue)) {
                     valueNoise.seed = newValue
-                    canvas.requestPaint()  // force redraw with new value
+                    canvas.requestPaint()
+                    text = valueNoise.seed.toString()
                 }
             }
         }
