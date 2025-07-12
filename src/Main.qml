@@ -23,17 +23,32 @@ Window {
             ctx.fillStyle = "#FFFFFF"
             ctx.fillRect(0, 0, width, height)
 
-            ctx.beginPath()
-            var p = valueNoise.period;
-            var s = valueNoise.steps;
-            for (var i = 0; i < s; i++) {
-                var x = i / (s - 1) * p
-                var y = valueNoise.noise1D(x)
-                var canvasX = i / (s - 1) * width
-                ctx.lineTo(canvasX, height * 5 / 8 - y * height / 4)
+            var p = manager.noise.period
+            var s = manager.noise.steps
+            if (manager.noiseType === 0) {
+                ctx.beginPath()
+                for (var i = 0; i < s; i++) {
+                    var x = i / (s - 1) * p
+                    var y = manager.noise.noise1D(x)
+                    var canvasX = i / (s - 1) * width
+                    ctx.lineTo(canvasX, height * 5 / 8 - y * height / 4)
+                }
+                ctx.lineWidth = 2
+                ctx.stroke()
+            } else if (manager.noiseType === 1) {
+                for (var i = 0; i < s; i++) {
+                    for (var j = 0; j < s; j++) {
+                        var cellW = width / s
+                        var x = i / (s - 1) * p
+                        var y = j / (s - 1) * p
+                        var canvasX = i / (s - 1) * width
+                        var canvasY = j / (s - 1) * height
+                        var intensity = Math.floor(manager.noise.noise2D(x, y) * 255)
+                        ctx.fillStyle = 'rgb(' + intensity + ', ' + intensity + ', ' + intensity + ')'
+                        ctx.fillRect(canvasX, canvasY, cellW,  cellW)
+                    }
+                }
             }
-            ctx.lineWidth = 2
-            ctx.stroke()
         }
     }
 
@@ -76,7 +91,14 @@ Window {
                border.color: "#D9D9D9"
                color: "transparent"
             }
+
+            onCurrentIndexChanged: {
+                manager.changeNoiseType(currentIndex);
+                canvas.requestPaint();
+            }
         }
+
+        //----- x Range start
         Text {
             id: xRangeText
             width: parent.width
@@ -121,7 +143,7 @@ Window {
             onEditingFinished: {
                 const newValue = parseInt(text)
                 if (!isNaN(newValue)) {
-                    valueNoise.period = newValue
+                    manager.noise.period = newValue
                     canvas.requestPaint()
                 }
             }*/
@@ -152,11 +174,13 @@ Window {
             onEditingFinished: {
                 const newValue = parseInt(text)
                 if (!isNaN(newValue)) {
-                    valueNoise.period = newValue
+                    manager.noise.period = newValue
                     canvas.requestPaint()
                 }
             }*/
         }
+        //----- x Range end
+        //----- Period start
         Text {
             id: periodText
             width: parent.width
@@ -195,19 +219,20 @@ Window {
             bottomPadding: 0
             topPadding: 0
 
-            text: valueNoise.period.toString()
+            text: manager.noise.period.toString()
             font.pixelSize: 12
 
             onEditingFinished: {
                 const newValue = parseInt(text)
                 if (!isNaN(newValue)) {
-                    valueNoise.period = newValue
+                    manager.noise.period = newValue
                     canvas.requestPaint()
-                    text = valueNoise.period.toString()
+                    text = manager.noise.period.toString()
                 }
             }
         }
-
+        //----- Period end
+        //----- Seed start
         Text {
             id: seedText
             width: parent.width
@@ -244,19 +269,20 @@ Window {
             bottomPadding: 0
             topPadding: 0
 
-            text: valueNoise.seed.toString()
+            text: manager.noise.seed.toString()
             font.pixelSize: 12
 
             onEditingFinished: {
                 const newValue = parseInt(text)
                 if (!isNaN(newValue)) {
-                    valueNoise.seed = newValue
+                    manager.noise.seed = newValue
                     canvas.requestPaint()
-                    text = valueNoise.seed.toString()
+                    text = manager.noise.seed.toString()
                 }
             }
         }
-
+        //----- Seed end
+        //----- Steps start
         Text {
             id: stepsText
             width: parent.width
@@ -293,18 +319,19 @@ Window {
             bottomPadding: 0
             topPadding: 0
 
-            text: valueNoise.steps.toString()
+            text: manager.noise.steps.toString()
             font.pixelSize: 12
 
             onEditingFinished: {
                 const newValue = parseInt(text)
                 if (!isNaN(newValue)) {
-                    valueNoise.steps = newValue
-                    canvas.requestPaint()  // force redraw with new value
+                    manager.noise.steps = newValue
+                    canvas.requestPaint()
                 }
             }
         }
-
+        //----- Steps end
+        //----- Export button
         Button {
             id: exportButton
             width: parent.width
@@ -332,7 +359,7 @@ Window {
                 color: 'transparent'
                 anchors.fill: parent
             }
-            onClicked: valueNoise.exportNoise()
+            onClicked: manager.noise.exportNoise()
         }
     }
 }

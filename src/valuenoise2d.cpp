@@ -1,11 +1,17 @@
 #include "valuenoise2d.h"
+#include <QDebug>
 
 ValueNoise2D::ValueNoise2D(QObject* parent)
     : Noise(parent)
 {
-    populateLattice();
 }
 
+float ValueNoise2D::noise1D(float x) const
+{
+    qDebug() << "noise1D() being called on ValueNoise2D";
+    return 0.0;
+}
+// returns a float in [0.0, 1.0]
 float ValueNoise2D::noise2D(float x, float y) const
 {
     int xInt = static_cast<int>(x);
@@ -42,7 +48,8 @@ void ValueNoise2D::populateLattice()
         for (int j=0; j<m_period; j++) {
             v.push_back(static_cast<float>(rand()) / static_cast<float>(RAND_MAX));
         }
-        m_lattice.push_back(v);
+        if (i < m_lattice.size()) m_lattice[i] = v;
+        else m_lattice.push_back(v);
     }
 }
 

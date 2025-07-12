@@ -11,13 +11,12 @@ class ValueNoise1D : public Noise
 public:
     ValueNoise1D(QObject* parent = nullptr);
 
-    Q_INVOKABLE float noise1D(float x) const;
+    void populateLattice() override;
+    float noise1D(float x) const override;
+    float noise2D(float x, float y) const;
     Q_INVOKABLE void exportNoise() const override;
-
 private:
     std::vector<float> m_lattice;
-
-    void populateLattice() override;
     void updateLatticePeriod(int newPeriod) override;
 };
 

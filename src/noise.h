@@ -12,9 +12,12 @@ class Noise : public QObject
 public:
     explicit Noise(QObject *parent = nullptr);
 
+    virtual void populateLattice() = 0;
     Q_INVOKABLE int period() const { return m_period; }
     Q_INVOKABLE int seed() const { return m_seed; }
     Q_INVOKABLE int steps() const { return m_steps; }
+    Q_INVOKABLE virtual float noise1D(float x) const = 0;
+    Q_INVOKABLE virtual float noise2D(float x, float y) const = 0;
     Q_INVOKABLE virtual void exportNoise() const = 0;
 
 public slots:
@@ -28,7 +31,6 @@ signals:
     void stepsChanged();
 
 protected:
-    virtual void populateLattice() = 0;
     virtual void updateLatticePeriod(int newPeriod) = 0;
 
     int m_period;

@@ -11,7 +11,6 @@
 ValueNoise1D::ValueNoise1D(QObject* parent)
     : Noise(parent)
 {
-    populateLattice();
 }
 
 // implement smoothstep to achieve smooth linear interpolation
@@ -26,6 +25,12 @@ float ValueNoise1D::noise1D(float x) const
     int maxX = (minX == m_period - 1) ? 0 : minX + 1;
 
     return lerp(smoothstep(t), m_lattice[minX], m_lattice[maxX]);
+}
+
+float ValueNoise1D::noise2D(float x, float y) const
+{
+    qDebug() << "nosie2D being called on ValueNoise1D";
+    return 0.0;
 }
 
 void ValueNoise1D::exportNoise() const
@@ -46,7 +51,9 @@ void ValueNoise1D::populateLattice()
 {
     srand(m_seed);
     for (int i=0; i<m_period; i++) {
-        m_lattice.push_back(static_cast<float>(rand()) / static_cast<float>(RAND_MAX));
+        float r = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
+        if (i < m_lattice.size()) m_lattice[i] = r;
+        else m_lattice.push_back(r);
     }
 }
 
