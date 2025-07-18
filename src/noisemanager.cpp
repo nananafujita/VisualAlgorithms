@@ -12,9 +12,12 @@ NoiseManager::NoiseManager(QObject *parent)
 
     m_currNoise = m_value1D;
     m_currType = 0;
+
+    m_minX = 0;
+    m_maxX = 10;
 }
 
-void NoiseManager::changeNoiseType(int type)
+void NoiseManager::setNoiseType(int type)
 {
     switch (type)
     {
@@ -33,3 +36,18 @@ void NoiseManager::changeNoiseType(int type)
     emit noiseTypeChanged();
 }
 
+void NoiseManager::setMinX(int x)
+{
+    if (x < m_maxX) {
+        m_minX = x;
+        emit xRangeChanged();
+    }
+}
+
+void NoiseManager::setMaxX(int x)
+{
+    if (x > m_minX) {
+        m_maxX = x;
+        emit xRangeChanged();
+    }
+}
