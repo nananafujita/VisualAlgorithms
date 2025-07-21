@@ -7,8 +7,8 @@ Noise::Noise(QObject *parent)
 void Noise::setPeriod(int period)
 {
     period = (period != 0) ? std::abs(period) : 1;
+
     if (period != 0 && m_period != period) {
-        updateLatticePeriod(period);
         m_period = period;
         emit periodChanged();
     }

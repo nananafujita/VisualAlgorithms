@@ -13,6 +13,7 @@ class Noise : public QObject
 
 public:
     explicit Noise(QObject *parent = nullptr);
+    virtual ~Noise() = default;
 
     // fills the lattice with a float in the range [0.0, 1.0]
     // called by setSeed()
@@ -40,17 +41,13 @@ signals:
     void stepsChanged();
 
 protected:
-    // period change => size of lattice vector changes
-    // add/decrease size of lattice
-    virtual void updateLatticePeriod(int newPeriod) = 0;
-
     // input values from user
-    // number of lattice points (noise repeats every m_period). default: 16
-    int m_period;
-    // default: 2025
-    int m_seed;
-    // default: 500
-    int m_steps;
+    int m_period = 16;
+    int m_seed = 2025;
+    int m_steps = 500;
+
+    // can not be changed by user
+    int m_latticeSize = 256;
 };
 
 inline float smoothstep(float t)

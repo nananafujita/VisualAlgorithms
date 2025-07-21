@@ -5,10 +5,7 @@ NoiseManager::NoiseManager(QObject *parent)
     : QObject{parent}
 {
     m_value1D = new ValueNoise1D(this);
-    m_value1D->populateLattice();
-
     m_value2D = new ValueNoise2D(this);
-    m_value2D->populateLattice();
 
     m_currNoise = m_value1D;
     m_currType = 0;

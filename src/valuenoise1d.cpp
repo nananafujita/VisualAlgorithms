@@ -11,28 +11,34 @@
 ValueNoise1D::ValueNoise1D(QObject* parent)
     : Noise(parent)
 {
+    populateLattice();
 }
 
 // implement smoothstep to achieve smooth linear interpolation
+// returns value in [0.0, 1.0]
 float ValueNoise1D::noise1D(float x) const
 {
     int xInt = static_cast<int>(x);
-    //int minX = x0 & (numVertices - 1);
+
+    // ensure that the noise repeats
+    // m_latticeSize = 256, x % 256 = x & 255
+    int minX = xInt & (m_latticeSize - 1);
+    int maxX = (minX == m_period - 1) ? 0 : minX + 1;
 
     float t = x - xInt;
-
-    int minX = xInt % m_period;   // ensures that the noise repeats
-    int maxX = (minX == m_period - 1) ? 0 : minX + 1;
 
     return lerp(smoothstep(t), m_lattice[minX], m_lattice[maxX]);
 }
 
+// filler function to allow Noise::noise2D() call
 float ValueNoise1D::noise2D(float x, float y) const
 {
     qDebug() << "nosie2D being called on ValueNoise1D";
     return 0.0;
 }
 
+// saves file to user's home
+// Mac: Users/<username>/1DNoise.csv
 void ValueNoise1D::exportNoise() const
 {
     QFile file(QDir::homePath() + "/1DNoise.csv");
@@ -47,22 +53,13 @@ void ValueNoise1D::exportNoise() const
     qDebug() << "Exporting to:" << QFileInfo(file).absoluteFilePath();
 }
 
+// change lattice values or push back to increase size
 void ValueNoise1D::populateLattice()
 {
     srand(m_seed);
-    for (int i=0; i<m_period; i++) {
+    for (int i=0; i<m_latticeSize; i++) {
         float r = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
         if (i < m_lattice.size()) m_lattice[i] = r;
         else m_lattice.push_back(r);
-    }
-}
-
-// add increment values when growing lattice size
-void ValueNoise1D::updateLatticePeriod(int newPeriod)
-{
-    if (m_period < newPeriod) {
-        for (int i=m_period; i<newPeriod; i++) {
-            m_lattice.push_back(static_cast<float>(rand()) / static_cast<float>(RAND_MAX));
-        }
     }
 }

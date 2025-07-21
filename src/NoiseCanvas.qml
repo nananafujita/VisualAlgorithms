@@ -1,9 +1,9 @@
 import QtQuick
 
-// Displays noise based on user input
-//   From min X to max X, however many periods fit (s steps per period)
+// displays noise based on user input
+//   from min X to max X, however many periods fit (s steps per period)
 //   e.g. if minX=0, maxX=32, period=16, 2 repeating periods displayed
-// Loop through the width/height of noise here, and call noise() draw functions
+// loop through the width/height of noise here, and call noise() draw functions
 Canvas {
     width: 500
     height: 500
@@ -19,6 +19,12 @@ Canvas {
         var maxX = manager.maxX
         var numPoints = (maxX - minX) / p * s
 
+        //--- draw functions
+        // x, (y for 2D): i scaled for each step in period
+        // canvasX, (Y): i scaled across canvas
+
+        // draw ValueNoise 1D: draw line between each point
+        // noise function output: y, value from 0 to 1.0
         if (manager.noiseType === 0) {
             ctx.beginPath()
             for (var i = 0; i < numPoints; i++) {
@@ -29,7 +35,10 @@ Canvas {
             }
             ctx.lineWidth = 2
             ctx.stroke()
-        } else if (manager.noiseType === 1) {
+        }
+        // draw ValueNoise 2D: fill rectangle at each point
+        // noise function output: intensity, value from 0 to 255
+        else if (manager.noiseType === 1) {
             for (var i = 0; i < numPoints; i++) {
                 for (var j = 0; j < numPoints; j++) {
                     var cellW = width / numPoints
