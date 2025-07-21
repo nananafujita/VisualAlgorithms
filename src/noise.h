@@ -15,10 +15,6 @@ public:
     explicit Noise(QObject *parent = nullptr);
     virtual ~Noise() = default;
 
-    // fills the lattice with a float in the range [0.0, 1.0]
-    // called by setSeed()
-    virtual void populateLattice() = 0;
-
     Q_INVOKABLE int period() const { return m_period; }
     Q_INVOKABLE int seed() const { return m_seed; }
     Q_INVOKABLE int steps() const { return m_steps; }
@@ -41,13 +37,23 @@ signals:
     void stepsChanged();
 
 protected:
+    void populateLattice();
+
     // input values from user
     int m_period = 16;
     int m_seed = 2025;
     int m_steps = 500;
 
+    // stores indices [0, 255] swapped randomly
+    // second half (256~511) repeats first half
+    // used for efficient lookup of lattice and lattice of size 256 regardless of noise dimension
+    int m_permTable[512];
+
+    // lattice stores random values in [0.0, 1.0)
+    // use 256 to allow easy bitwise AND instead of modulo operator
     // can not be changed by user
     int m_latticeSize = 256;
+    float m_lattice[256];
 };
 
 inline float smoothstep(float t)

@@ -4,7 +4,6 @@
 ValueNoise2D::ValueNoise2D(QObject* parent)
     : Noise(parent)
 {
-    populateLattice();
 }
 
 float ValueNoise2D::noise1D(float x) const
@@ -32,8 +31,8 @@ float ValueNoise2D::noise2D(float x, float y) const
     float smoothY = smoothstep(ty);
 
     // lerp over x axis
-    float lerpx0 = lerp(smoothX, m_lattice[yLo][xLo], m_lattice[yLo][xHi]);
-    float lerpx1 = lerp(smoothX, m_lattice[yHi][xLo], m_lattice[yHi][xHi]);
+    float lerpx0 = lerp(smoothX, m_lattice[m_permTable[xLo] + yLo], m_lattice[m_permTable[xHi] + yLo]);
+    float lerpx1 = lerp(smoothX, m_lattice[m_permTable[xLo] + yHi], m_lattice[m_permTable[xHi] + yHi]);
 
     // lerp over y axis
     return(lerp(smoothY, lerpx0, lerpx1));
@@ -42,17 +41,4 @@ float ValueNoise2D::noise2D(float x, float y) const
 void ValueNoise2D::exportNoise() const
 {
 
-}
-
-void ValueNoise2D::populateLattice()
-{
-    srand(m_seed);
-    for (int i=0; i<m_latticeSize; i++) {
-        std::vector<float> v;
-        for (int j=0; j<m_period; j++) {
-            v.push_back(static_cast<float>(rand()) / static_cast<float>(RAND_MAX));
-        }
-        if (i < m_lattice.size()) m_lattice[i] = v;
-        else m_lattice.push_back(v);
-    }
 }

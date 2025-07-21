@@ -11,7 +11,6 @@
 ValueNoise1D::ValueNoise1D(QObject* parent)
     : Noise(parent)
 {
-    populateLattice();
 }
 
 // implement smoothstep to achieve smooth linear interpolation
@@ -51,15 +50,4 @@ void ValueNoise1D::exportNoise() const
         out << x << "," << y << "\n";
     }
     qDebug() << "Exporting to:" << QFileInfo(file).absoluteFilePath();
-}
-
-// change lattice values or push back to increase size
-void ValueNoise1D::populateLattice()
-{
-    srand(m_seed);
-    for (int i=0; i<m_latticeSize; i++) {
-        float r = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
-        if (i < m_lattice.size()) m_lattice[i] = r;
-        else m_lattice.push_back(r);
-    }
 }
