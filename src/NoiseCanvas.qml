@@ -5,6 +5,7 @@ import QtQuick
 //   e.g. if minX=0, maxX=32, period=16, 2 repeating periods displayed
 // loop through the width/height of noise here, and call noise() draw functions
 Canvas {
+    id: noiseCanvas
     width: 500
     height: 500
 

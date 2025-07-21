@@ -1,5 +1,11 @@
 #include "valuenoise2d.h"
+
 #include <QDebug>
+#include <QDir>
+#include <QFile>
+#include <QFileInfo>
+#include <QIODevice>
+#include <QTextStream>
 
 ValueNoise2D::ValueNoise2D(QObject* parent)
     : Noise(parent)
@@ -40,5 +46,17 @@ float ValueNoise2D::noise2D(float x, float y) const
 
 void ValueNoise2D::exportNoise() const
 {
-
+    QFile file(QDir::homePath() + "/2DValueNoise.ppm");
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) return;
+    QTextStream out(&file);
+    out << "P3\n" << m_steps << " " << m_steps << "\n" << "255\n";
+    for (int i=0; i<m_steps; i++) {
+        for (int j=0; j<m_steps; j++) {
+            float iCanvas = static_cast<float>(i) / m_steps * m_period;
+            float jCanvas = static_cast<float>(j) / m_steps * m_period;
+            int col = static_cast<int>(noise2D(jCanvas, iCanvas) * 255);
+            out << col << " " << col << " " << col << "\n";
+        }
+    }
+    qDebug() << "Exported to:" << QFileInfo(file).absoluteFilePath();
 }

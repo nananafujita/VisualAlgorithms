@@ -36,18 +36,19 @@ float ValueNoise1D::noise2D(float x, float y) const
     return 0.0;
 }
 
-// saves file to user's home
+// saves one period of noise to user's home
 // Mac: Users/<username>/1DNoise.csv
 void ValueNoise1D::exportNoise() const
 {
-    QFile file(QDir::homePath() + "/1DNoise.csv");
+    QFile file(QDir::homePath() + "/1DValueNoise.csv");
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) return;
     QTextStream out(&file);
     out << "x,y\n";
+
     for (int i=0; i<m_steps; i++) {
         float x = static_cast<float>(i) / (m_steps - 1) * m_period;
         float y = noise1D(x);
         out << x << "," << y << "\n";
     }
-    qDebug() << "Exporting to:" << QFileInfo(file).absoluteFilePath();
+    qDebug() << "Exported to:" << QFileInfo(file).absoluteFilePath();
 }

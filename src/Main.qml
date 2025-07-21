@@ -8,7 +8,6 @@ Window {
     visible: true
     title: qsTr("Visual Algorithms")
     color: '#D9D9D9'
-    Material.theme: Material.Dark
 
     NoiseCanvas {
         id: canvas
