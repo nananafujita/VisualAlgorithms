@@ -51,7 +51,7 @@ protected:
 
     // lattice stores random values in [0.0, 1.0)
     // use 256 to allow easy bitwise AND instead of modulo operator
-    // can not be changed by user
+    // can not be changed by users
     int m_latticeSize = 256;
     float m_lattice[256];
 };

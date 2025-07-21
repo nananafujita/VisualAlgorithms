@@ -1,7 +1,6 @@
 #include "noise.h"
 
 #include <random>
-#include <QDebug>
 
 Noise::Noise(QObject *parent)
     : QObject{parent}, m_seed(2025), m_period(16), m_steps(500)
@@ -47,7 +46,6 @@ void Noise::populateLattice()
     for (int i=0; i<m_latticeSize; i++) {
         m_permTable[i] = i;
         m_lattice[i] = distribFloat(gen);
-        qDebug() << m_lattice[i];
     }
 
     std::uniform_int_distribution<unsigned> distribInt(0, 255);
