@@ -1,6 +1,6 @@
 # VisualAlgorithms
 Desktop 1D and 2D noise generator made in Qt Quick using QML and C++
 
-Sample Ouput:
+Sample Output:
 
-<img src="sampleValue1D" alt="2D Value Noise Sample Ouput" width=400>
+<img src="2DValueNoise.ppm" alt="2D Value Noise Sample Output" width=400>
